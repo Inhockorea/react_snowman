@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./Snowman.css";
+import { randomWord, ENGLISH_WORDS} from "./words.js";
 import img0 from "./0.png";
 import img1 from "./1.png";
 import img2 from "./2.png";
@@ -8,12 +9,13 @@ import img4 from "./4.png";
 import img5 from "./5.png";
 import img6 from "./6.png";
 
-function Snowman({maxWrong, images, words}) {
+function Snowman({ maxWrong, images, words }) {
   /** by default, allow 6 guesses and use provided gallows images. */
 
   const [nWrong, updateNWrong] = useState(0);
   const [guessed, updateGuessed] = useState(new Set());
-  const [answer, updateAnswer] = useState(words[0]);
+  const [answer, updateAnswer] = useState(randomWord(words));
+
 
   /** guessedWord: show current-state of word:
     if guessed letters are {a,p,e}, show "app_e" for "apple"
@@ -53,13 +55,28 @@ function Snowman({maxWrong, images, words}) {
     ));
   }
 
+  /** You Lose message to be displayed when maxWrong and nWrong are equal */
+  const loseMsg = `You lose! The word was ${answer}`;
+
+
+  /** Determines if game can continue and buttons stay rendered or displays lose message */
+  const finalHTML = nWrong < maxWrong ? generateButtons() : loseMsg
+
+/** resets game by reseting states, and picking new word */
+function resetGame(){
+  updateAnswer(randomWord(words));
+  updateGuessed(new Set());
+  updateNWrong(0);
+}
+
   /** render: render game */
   return (
     <div className="Snowman" alt="Snowman">
-      <img src={images[nWrong]} alt= {`img${images[nWrong][0]}`}/> 
+      <img src={images[nWrong]} alt={`img${images[nWrong][0]}`} />
       <p> Number wrong: {nWrong}</p>
       <p className="Snowman-word">{guessedWord()}</p>
-      <p>{generateButtons()}</p>
+      <p>{finalHTML}</p> 
+      <button onClick={resetGame} >Reset</button>
     </div>
   );
 }
@@ -67,7 +84,7 @@ function Snowman({maxWrong, images, words}) {
 Snowman.defaultProps = {
   maxWrong: 6,
   images: [img0, img1, img2, img3, img4, img5, img6],
-  words: ["apple"]
+  words: ENGLISH_WORDS
 };
 
 export default Snowman;

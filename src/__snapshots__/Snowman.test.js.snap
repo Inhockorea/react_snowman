@@ -150,6 +150,9 @@ exports[`matches snapshot 1`] = `
         z
       </button>
     </p>
+    <button>
+      Reset
+    </button>
   </div>
 </DocumentFragment>
 `;
