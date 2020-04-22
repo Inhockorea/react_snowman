@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./Snowman.css";
-import { randomWord, ENGLISH_WORDS} from "./words.js";
+import { randomWord, ENGLISH_WORDS } from "./words.js";
 import img0 from "./0.png";
 import img1 from "./1.png";
 import img2 from "./2.png";
@@ -55,28 +55,29 @@ function Snowman({ maxWrong, images, words }) {
     ));
   }
 
-  /** You Lose message to be displayed when maxWrong and nWrong are equal */
-  const loseMsg = `You lose! The word was ${answer}`;
+  // ********************************************************************************
+  /** Determines if game can continue with buttons rendered or displays lose message */
+  // TODO need a better variable name, one could read now as "final message of the game"
+  const finalHTML = nWrong < maxWrong ? generateButtons() : `You lose! The word was ${answer}`;
 
-
-  /** Determines if game can continue and buttons stay rendered or displays lose message */
-  const finalHTML = nWrong < maxWrong ? generateButtons() : loseMsg
-
-/** resets game by reseting states, and picking new word */
-function resetGame(){
-  updateAnswer(randomWord(words));
-  updateGuessed(new Set());
-  updateNWrong(0);
-}
+  /** resets game by reseting states, and picking new word */
+  function resetGame() {
+    updateAnswer(randomWord(words));
+    updateGuessed(new Set());
+    updateNWrong(0);
+  }
+  // ********************************************************************************
 
   /** render: render game */
+  // maybe add reset button to lose message, be a strict game keeper
+  // comment on <img>, it's dense
   return (
     <div className="Snowman" alt="Snowman">
       <img src={images[nWrong]} alt={`img${images[nWrong][0]}`} />
       <p> Number wrong: {nWrong}</p>
       <p className="Snowman-word">{guessedWord()}</p>
-      <p>{finalHTML}</p> 
-      <button onClick={resetGame} >Reset</button>
+      <p>{finalHTML}</p>
+      <button onClick={resetGame} >Reset</button>  
     </div>
   );
 }

@@ -1,11 +1,12 @@
 import React from "react";
 import '@testing-library/jest-dom/extend-expect';
-import { render, fireEvent, queryAllByAltText } from "@testing-library/react";
+import { render, fireEvent } from "@testing-library/react";
 import Snowman from "./Snowman";
 
 const maxWrong = 3;
 const words = ['apple'];
 const testSnowman = <Snowman maxWrong={maxWrong} words={words} />;
+
 
 it("renders without crashing", function () {
   render(testSnowman);
@@ -51,7 +52,7 @@ it("shows the message 'you lose' when you guess more than max guesses", function
 });
 
 it("ensures reset function returns states to default vaules", function () {
-  const { getByText, queryByAltText } = render(testSnowman);
+  const { getByText } = render(testSnowman);
 
   fireEvent.click(getByText("b"));
   fireEvent.click(getByText("a"));
